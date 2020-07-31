@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Static content controller.
  *
@@ -28,24 +29,26 @@ App::uses('AppController', 'Controller');
  * @package       app.Controller
  * @link https://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
-class PagesController extends AppController {
+class PagesController extends AppController
+{
 
-/**
- * This controller does not use a model
- *
- * @var array
- */
+	/**
+	 * This controller does not use a model
+	 *
+	 * @var array
+	 */
 	public $uses = array();
 
-/**
- * Displays a view
- *
- * @return CakeResponse|null
- * @throws ForbiddenException When a directory traversal attempt.
- * @throws NotFoundException When the view file could not be found
- *   or MissingViewException in debug mode.
- */
-	public function display() {
+	/**
+	 * Displays a view
+	 *
+	 * @return CakeResponse|null
+	 * @throws ForbiddenException When a directory traversal attempt.
+	 * @throws NotFoundException When the view file could not be found
+	 *   or MissingViewException in debug mode.
+	 */
+	public function display()
+	{
 		$path = func_get_args();
 
 		$count = count($path);
@@ -78,54 +81,12 @@ class PagesController extends AppController {
 		}
 	}
 
-	public function estoque_manual() {
-		$this->layout = 'admin';
-		$this->loadModel('Estoque');
-	}
+	public function index()
+	{
+		$this->layout = 'site';
 
-	public function estoque_automatico(){
-		$this->layout = 'admin';
-		$this->loadModel('Estoque');
-		$this->loadModel('Product');
+		$siteUrl = "Home";
 
-
-		$infoEstoque = $this->Estoque->find('all', array(
-			'fields' => array(
-				'Estoque.ID',
-				'Estoque.Descricao',
-				'Estoque.Estoque'
-			)
-		));
-
-		$arrayProducts = array();
-		$i = 1;
-		foreach ($infoEstoque as $key => $estoque) {
-			
-			$product = $this->Product->find('first', array(	
-				'fields' => array(
-					'Product.id',
-				),
-				'conditions' => array(
-					'Product.id_iset' => $estoque['Estoque']['ID']
-				)
-			));
-
-			if(isset($product['Product'])){
-				$this->Product->id= $product['Product']['id'];
-				$this->Product->saveField("quantity",$estoque['Estoque']['Estoque']);
-
-				$arrayProducts[] = array(
-					"type" => "product",
-					"id" => $estoque['Estoque']['ID'],
-					"quantity" => $estoque['Estoque']['Estoque']
-				);
-				$i ++;
-			}			
-		}
-
-		$stockProducts = $this->atualizarEstoqueAutomatico($arrayProducts);
-
-
-		debug($stockProducts);die();
+		$this->set(compact('siteUrl'));
 	}
 }

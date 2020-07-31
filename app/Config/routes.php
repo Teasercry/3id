@@ -26,7 +26,10 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-Router::connect('/', array('controller' => 'AdmUsers', 'action' => 'login'));
+
+Router::connect('/', array('controller' => 'Pages', 'action' => 'index'));
+
+Router::connect('/login', array('controller' => 'AdmUsers', 'action' => 'login'));
 Router::connect('/esqueceu-senha', array('controller' => 'AdmUsers', 'action' => 'esqueceu_senha'));
 Router::connect('/recuperar-senha-adm/*', array('controller' => 'AdmUsers', 'action' => 'recuperar_senha_adm'));
 Router::connect('/env-recuperar-senha-adm', array('controller' => 'AdmUsers', 'action' => 'env_recuperar_senha_adm'));
